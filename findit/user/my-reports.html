@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Light or dark before the page draws: the saved choice, else the device setting -->
+  <script>(function () { var t; try { t = localStorage.getItem("findit.theme"); } catch (e) {} document.documentElement.dataset.theme = t === "dark" || t === "light" ? t : (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"); })();</script>
+  <title>FindIt | My Reports</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/my-reports.css">
+  <!-- Reports are personal: send logged-out visitors to the login page first -->
+  <script src="../js/auth.js"></script>
+  <script>Auth.requireRole("user", "login.html");</script>
+</head>
+<body data-page="my-reports" class="reports-body">
+
+  <div id="navbar"></div>
+
+  <main class="section reports-main">
+    <div class="container">
+      <header class="reports-header">
+        <div>
+          <h1>My Reports</h1>
+          <p>Track everything you've reported to SWAFO.</p>
+        </div>
+        <a href="report.html" class="btn btn-primary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 5v14M5 12h14" />
+          </svg>
+          New report
+        </a>
+      </header>
+
+      <div class="report-filters" id="report-filters" role="group" aria-label="Filter reports"></div>
+
+      <p class="reports-notice" id="reports-notice" role="status"></p>
+
+      <!-- Filled in by js/my-reports.js from UserAPI.getMyReports() -->
+      <div class="reports-layout" id="reports-layout">
+        <ul class="report-list" id="report-list" aria-label="Your reports"></ul>
+        <section class="report-detail" id="report-detail" aria-labelledby="detail-title"></section>
+      </div>
+
+      <div class="empty-state reports-empty" id="reports-empty" hidden>
+        <h2>You haven't reported anything yet</h2>
+        <p>Lost something on campus, or found something that isn't yours? Let SWAFO know.</p>
+        <a href="report.html" class="btn btn-primary">Report an item</a>
+      </div>
+    </div>
+  </main>
+
+  <div id="footer"></div>
+
+  <script src="js/main.js"></script>
+  <script src="../js/data/locations.js"></script>
+  <script src="../js/item-store.js"></script>
+  <script src="../js/claim-store.js"></script>
+  <script src="../js/report-store.js"></script>
+  <script src="../js/settings-store.js"></script>
+  <script src="js/mock-data.js"></script>
+  <script src="js/my-reports.js"></script>
+</body>
+</html>

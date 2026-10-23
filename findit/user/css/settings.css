@@ -1,0 +1,352 @@
+/* settings.html: a sidebar of sections on desktop (one shown at a time), stacked below 900px. */
+.settings-layout {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: 2rem;
+  align-items: start;
+}
+
+.settings-nav {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.settings-nav a {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.65rem 0.9rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  border-radius: var(--radius-sm);
+  transition: background-color var(--transition), color var(--transition);
+}
+
+.settings-nav a:hover {
+  color: var(--green);
+  background-color: var(--surface-sunken);
+}
+
+.settings-nav a[aria-current="true"] {
+  color: var(--green);
+  background-color: var(--green-tint);
+}
+
+.settings-nav .settings-nav-danger:hover,
+.settings-nav .settings-nav-danger[aria-current="true"] {
+  color: var(--danger);
+  background-color: var(--danger-bg);
+}
+
+.settings-section h2 {
+  margin-bottom: 0.25rem;
+  font-size: 1.35rem;
+  color: var(--green);
+}
+
+/* Focused from the sidebar so screen readers start there; it isn't a tab stop. */
+.settings-section h2:focus {
+  outline: none;
+}
+
+.settings-intro {
+  margin: 0 0 1.5rem;
+  color: var(--text-muted);
+}
+
+.settings-section input[readonly] {
+  color: var(--text-muted);
+  background-color: var(--surface-sunken);
+  cursor: default;
+}
+
+/* Inline errors under a field */
+.field-error {
+  margin: 0;
+  font-size: 0.825rem;
+  font-weight: 600;
+  color: var(--danger);
+}
+
+.settings-section input[aria-invalid="true"] {
+  border-color: var(--danger);
+}
+
+.settings-section input[aria-invalid="true"]:focus {
+  box-shadow: 0 0 0 3px var(--danger-glow);
+}
+
+/* Profile photo */
+.photo-field {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.photo-preview {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 88px;
+  height: 88px;
+  overflow: hidden;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--green);
+  background-color: var(--green-tint);
+  border-radius: 50%;
+}
+
+.photo-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.photo-label {
+  margin: 0 0 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.photo-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.4rem;
+}
+
+/* Notification switches (same look as the admin Settings page) */
+.switch-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.switch-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.switch-row:first-child {
+  padding-top: 0;
+}
+
+.switch-row:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.switch-row label {
+  cursor: pointer;
+}
+
+.switch-row .form-hint {
+  margin-top: 0.15rem;
+}
+
+/* input.switch: beats input[type="checkbox"] in components.css */
+input.switch {
+  position: relative;
+  flex-shrink: 0;
+  width: 44px;
+  height: 24px;
+  margin: 0;
+  padding: 0;
+  background-color: var(--switch-off);
+  border: 0;
+  border-radius: var(--radius-pill);
+  appearance: none;
+  cursor: pointer;
+  transition: background-color var(--transition);
+}
+
+.switch::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  background-color: var(--switch-thumb);
+  border-radius: 50%;
+  box-shadow: var(--shadow-small);
+  transition: transform var(--transition);
+}
+
+.switch:checked {
+  background-color: var(--green);
+}
+
+.switch:checked::after {
+  transform: translateX(20px);
+}
+
+.switch:focus {
+  box-shadow: none;
+}
+
+.switch:focus-visible {
+  outline: 3px solid var(--green);
+  outline-offset: 2px;
+}
+
+/* Danger zone */
+.settings-danger {
+  border-color: var(--danger-border);
+}
+
+.settings-danger h2 {
+  color: var(--danger);
+}
+
+.danger-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 1rem 1.25rem;
+  background-color: var(--danger-bg);
+  border-radius: var(--radius-md);
+}
+
+.danger-row h3 {
+  margin-bottom: 0.2rem;
+  font-family: var(--font-body);
+  font-size: 1rem;
+}
+
+.danger-row p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.danger-row .btn {
+  flex-shrink: 0;
+}
+
+/* Delete confirmation */
+.modal {
+  width: min(440px, calc(100vw - 2rem));
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-raised);
+}
+
+.modal::backdrop {
+  background-color: var(--backdrop);
+}
+
+.modal-body {
+  padding: 1.75rem;
+}
+
+.modal h2 {
+  margin-bottom: 0.5rem;
+  font-size: 1.3rem;
+}
+
+.modal p {
+  color: var(--text-muted);
+}
+
+.modal .field-error {
+  margin-top: 0.75rem;
+  color: var(--danger);
+}
+
+/* Toasts */
+.toast-region {
+  position: fixed;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  z-index: 200;
+  display: grid;
+  gap: 0.5rem;
+  max-width: min(400px, calc(100vw - 2rem));
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0;
+  padding: 0.85rem 1.1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--toast-text);
+  background-color: var(--toast-bg);
+  border: 1px solid var(--toast-border); /* keeps its edge over the footer */
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-raised);
+  animation: toast-in 0.2s ease;
+}
+
+.toast svg {
+  flex-shrink: 0;
+}
+
+.toast-error {
+  background-color: var(--danger);
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toast {
+    animation: none;
+  }
+}
+
+@media (min-width: 901px) {
+  .settings-section:not(.is-active) {
+    display: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .settings-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .settings-nav {
+    display: none;
+  }
+
+  .settings-panels {
+    display: grid;
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .settings-section {
+    padding: 1.5rem 1.25rem;
+  }
+
+  .photo-field,
+  .danger-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .toast-region {
+    right: 1rem;
+    bottom: 1rem;
+    left: 1rem;
+  }
+}

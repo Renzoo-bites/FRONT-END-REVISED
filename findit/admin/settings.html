@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Light or dark before the page draws: the saved choice, else the device setting -->
+  <script>(function () { var t; try { t = localStorage.getItem("findit.theme"); } catch (e) {} document.documentElement.dataset.theme = t === "dark" || t === "light" ? t : (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"); })();</script>
+  <title>FindIt Admin | Settings</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="css/admin.css">
+  <script src="../js/auth.js"></script>
+  <script>Auth.requireRole("admin", "../user/login.html?role=admin");</script>
+</head>
+<body data-page="settings">
+
+  <div id="admin-sidebar"></div>
+
+  <div class="admin-main">
+    <div id="admin-topbar"></div>
+
+    <main class="admin-content">
+      <header class="page-head">
+        <h1>Settings</h1>
+        <p>Office details, notifications, and demo data.</p>
+      </header>
+
+      <div class="settings-grid">
+        <section class="admin-card settings-card settings-wide" aria-labelledby="office-heading">
+          <h2 id="office-heading">Office details</h2>
+          <p class="settings-note">Students see these on the About page and in Messages.</p>
+
+          <form id="office-form">
+            <div class="field-row">
+              <div class="field">
+                <label for="office-name">Short name</label>
+                <input type="text" id="office-name" name="name" required>
+              </div>
+              <div class="field">
+                <label for="office-fullName">Full name</label>
+                <input type="text" id="office-fullName" name="fullName" required>
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="office-location">Location</label>
+                <input type="text" id="office-location" name="location" required>
+              </div>
+              <div class="field">
+                <label for="office-email">Email</label>
+                <input type="email" id="office-email" name="email" required>
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="office-officeHours">Office hours</label>
+                <input type="text" id="office-officeHours" name="officeHours" required>
+              </div>
+              <div class="field">
+                <label for="office-pickupHours">Pick-up hours</label>
+                <input type="text" id="office-pickupHours" name="pickupHours" required aria-describedby="pickup-hint">
+                <p class="field-hint" id="pickup-hint">Short version, shown in the Messages panel.</p>
+              </div>
+            </div>
+
+            <div class="settings-actions">
+              <p class="save-status" id="office-status" role="status"></p>
+              <button type="submit" class="admin-btn admin-btn-primary">Save changes</button>
+            </div>
+          </form>
+        </section>
+
+        <section class="admin-card settings-card" aria-labelledby="notif-heading">
+          <h2 id="notif-heading">Notifications</h2>
+          <p class="settings-note">Choose what shows up under the bell. Changes save right away.</p>
+
+          <ul class="switch-list" id="notif-switches">
+            <li>
+              <label class="switch-row">
+                <span><strong>Student messages</strong><span>When a student sends a message</span></span>
+                <input type="checkbox" class="switch" data-type="message">
+              </label>
+            </li>
+            <li>
+              <label class="switch-row">
+                <span><strong>New claims</strong><span>When someone claims an item</span></span>
+                <input type="checkbox" class="switch" data-type="claim">
+              </label>
+            </li>
+            <li>
+              <label class="switch-row">
+                <span><strong>Possible matches</strong><span>When a lost and a found report look alike</span></span>
+                <input type="checkbox" class="switch" data-type="match">
+              </label>
+            </li>
+            <li>
+              <label class="switch-row">
+                <span><strong>New reports</strong><span>When a lost or found report comes in</span></span>
+                <input type="checkbox" class="switch" data-type="report">
+              </label>
+            </li>
+          </ul>
+          <p class="save-status" id="notif-status" role="status"></p>
+        </section>
+
+        <section class="admin-card settings-card" aria-labelledby="account-heading">
+          <h2 id="account-heading">Account</h2>
+          <div class="settings-account">
+            <span class="chat-avatar" id="account-initials" aria-hidden="true"></span>
+            <div>
+              <p class="settings-account-name" id="account-name"></p>
+              <p class="settings-note" id="account-email"></p>
+            </div>
+          </div>
+          <p class="settings-note">Passwords and staff accounts will be managed by the login system once the backend is connected.</p>
+        </section>
+
+        <section class="admin-card settings-card" aria-labelledby="demo-heading">
+          <h2 id="demo-heading">Demo data</h2>
+          <p class="settings-note">
+            Puts back the sample messages, found items, claims, student reports, settings and notifications in this browser.
+            Handy before a presentation.
+          </p>
+          <button type="button" class="admin-btn admin-btn-danger" id="reset-demo">Reset demo data</button>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/message-store.js"></script>
+  <script src="../js/data/locations.js"></script>
+  <script src="../js/item-store.js"></script>
+  <script src="../js/claim-store.js"></script>
+  <script src="../js/report-store.js"></script>
+  <script src="../js/settings-store.js"></script>
+  <script src="../js/photos.js"></script>
+  <script src="js/mock-data.js"></script>
+  <script src="js/admin.js"></script>
+  <script src="js/notifications.js"></script>
+  <script src="js/add-item.js"></script>
+  <script src="js/settings.js"></script>
+</body>
+</html>

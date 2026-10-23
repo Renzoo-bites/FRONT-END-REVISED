@@ -1,0 +1,525 @@
+/* messages.html layout: conversation list | chat thread | info panel, inside one card.
+   Below 1100px the info panel slides over; below 720px the list and chat take turns.
+   Bubbles, composer, photos and the photo viewer are shared with the admin in chat.css. */
+
+/* The page is exactly one screen tall; only the list, thread and panel scroll */
+.messages-body {
+  height: 100vh;
+  height: 100dvh;
+  background-color: var(--bg);
+}
+
+.messages-main {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  padding: 1.5rem;
+}
+
+.messages-app {
+  position: relative;
+  display: grid;
+  grid-template-columns: 320px minmax(0, 1fr) 300px;
+  width: 100%;
+  max-width: 1280px;
+  min-height: 0;
+  margin: 0 auto;
+  overflow: hidden;
+  background-color: var(--card);
+  border-radius: 20px;
+  box-shadow: var(--shadow-raised);
+}
+
+.icon-btn {
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  color: var(--text);
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color var(--transition);
+}
+
+.icon-btn:hover {
+  background-color: var(--surface-sunken);
+}
+
+.item-tile {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+}
+
+.tone-green { color: var(--success); background-color: var(--success-bg); }
+.tone-blue { color: var(--info); background-color: var(--info-bg); }
+.tone-amber { color: var(--warning); background-color: var(--warning-bg); }
+.tone-gray { color: var(--text-muted); background-color: var(--surface-sunken); }
+
+/* ---------- Conversation list ---------- */
+.convo-panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  border-right: 1px solid var(--border);
+}
+
+.convo-head {
+  padding: 1.5rem 1.25rem 1rem;
+}
+
+.convo-head h1 {
+  margin: 0 0 1rem;
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 400;
+}
+
+.convo-search {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.convo-search svg {
+  position: absolute;
+  top: 50%;
+  left: 0.85rem;
+  color: var(--text-muted);
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.convo-search input {
+  padding: 0.6rem 1rem 0.6rem 2.4rem;
+  font-size: 0.9rem;
+  background-color: var(--surface-sunken);
+  border-color: transparent;
+  border-radius: var(--radius-pill);
+}
+
+.convo-filters {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.convo-filter {
+  padding: 0.35rem 0.85rem;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: none;
+  border: 0;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+}
+
+.convo-filter:hover {
+  color: var(--text);
+  background-color: var(--surface-sunken);
+}
+
+.convo-filter[aria-pressed="true"] {
+  color: var(--on-green);
+  background-color: var(--green);
+}
+
+.convo-list {
+  flex: 1;
+  margin: 0;
+  padding: 0 0 1rem;
+  overflow-y: auto;
+  list-style: none;
+}
+
+.convo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.85rem 1.25rem 0.85rem calc(1.25rem - 3px);
+  font-family: var(--font-body);
+  text-align: left;
+  color: inherit;
+  background: none;
+  border: 0;
+  border-left: 3px solid transparent;
+  cursor: pointer;
+}
+
+.convo:hover {
+  background-color: var(--surface-sunken);
+}
+
+.convo[aria-current="true"] {
+  background-color: var(--green-tint);
+  border-left-color: var(--green);
+}
+
+.convo-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.convo-name {
+  display: block;
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.convo.is-unread .convo-name {
+  font-weight: 800;
+}
+
+.convo-preview {
+  display: block;
+  overflow: hidden;
+  font-size: 0.82rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--text-muted);
+}
+
+.convo.is-unread .convo-preview {
+  color: var(--text);
+}
+
+.convo-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  align-self: flex-start;
+  gap: 0.35rem;
+}
+
+.convo-time {
+  font-size: 0.75rem;
+  white-space: nowrap;
+  color: var(--text-muted);
+}
+
+.unread-badge {
+  display: grid;
+  place-items: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--on-green);
+  background-color: var(--green);
+  border-radius: var(--radius-pill);
+}
+
+.convo-empty {
+  padding: 2rem 1.25rem;
+  font-size: 0.9rem;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+/* ---------- Chat thread ---------- */
+.thread {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  background-color: var(--surface);
+}
+
+.thread-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.9rem 1.25rem;
+  background-color: var(--card);
+  border-bottom: 1px solid var(--border);
+}
+
+.thread-title {
+  flex: 1;
+  min-width: 0;
+}
+
+.thread-title h2 {
+  margin: 0;
+  overflow: hidden;
+  font-size: 1rem;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.thread-title h2:focus {
+  outline: none;
+}
+
+.thread-title p {
+  margin: 0;
+  overflow: hidden;
+  font-size: 0.8rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--text-muted);
+}
+
+.thread-head .btn {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+}
+
+.thread-back,
+.info-toggle,
+.info-close {
+  display: none;
+}
+
+.safety-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  margin: 0.9rem 1.25rem 0;
+  padding: 0.65rem 0.9rem;
+  font-size: 0.82rem;
+  color: var(--warning);
+  background-color: var(--warning-bg);
+  border: 1px solid var(--warning-border);
+  border-radius: 10px;
+}
+
+.safety-banner svg {
+  flex-shrink: 0;
+  margin-top: 0.05rem;
+}
+
+.safety-banner p {
+  margin: 0;
+}
+
+/* ---------- Info panel ---------- */
+.info-panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: 1.5rem 1.25rem;
+  overflow-y: auto;
+  background-color: var(--card);
+  border-left: 1px solid var(--border);
+}
+
+.office {
+  margin-bottom: 1.25rem;
+  text-align: center;
+}
+
+.office-avatar {
+  display: grid;
+  place-items: center;
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 0.75rem;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--on-green);
+  background-color: var(--green);
+  border-radius: 50%;
+}
+
+.office h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 400;
+}
+
+.office p {
+  margin: 0.15rem 0 0;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.info-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.info-actions .btn {
+  flex: 1;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+}
+
+.info-panel h3 {
+  margin: 0 0 0.6rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.info-box {
+  margin-bottom: 1.25rem;
+  padding: 1rem;
+  background-color: var(--green-tint);
+  border-radius: 12px;
+}
+
+.info-box dl {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0;
+  font-size: 0.85rem;
+}
+
+.info-box dl div {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.info-box dt {
+  color: var(--text-muted);
+}
+
+.info-box dd {
+  margin: 0;
+  font-weight: 600;
+}
+
+.info-empty {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.report-link {
+  margin-top: auto;
+  padding: 1.5rem 0 0;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--danger);
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+.report-link:hover:not(:disabled) {
+  text-decoration: underline;
+}
+
+.report-link:disabled {
+  color: var(--text-muted);
+  cursor: default;
+}
+
+.info-backdrop {
+  display: none;
+}
+
+/* ---------- Tablet: info panel slides over the chat ---------- */
+@media (max-width: 1100px) {
+  .messages-app {
+    grid-template-columns: 300px minmax(0, 1fr);
+  }
+
+  .info-toggle,
+  .info-close {
+    display: inline-grid;
+  }
+
+  .info-close {
+    align-self: flex-end;
+    margin-bottom: 0.5rem;
+  }
+
+  .info-panel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 5;
+    width: min(320px, 100%);
+    border-left: 0;
+    box-shadow: var(--shadow-raised);
+    transform: translateX(100%);
+    visibility: hidden;
+    transition: transform 0.25s ease, visibility 0.25s;
+  }
+
+  /* Visible at once when opening (so its close button can take focus); the delayed hide above
+     only applies when closing, so it stays visible while sliding out. */
+  .messages-app.show-info .info-panel {
+    transform: none;
+    visibility: visible;
+    transition: transform 0.25s ease, visibility 0s;
+  }
+
+  .messages-app.show-info .info-backdrop {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    display: block;
+    background-color: var(--backdrop);
+  }
+}
+
+/* ---------- Phone: list or chat, one at a time ---------- */
+@media (max-width: 720px) {
+  .messages-main {
+    padding: 0;
+  }
+
+  .messages-app {
+    grid-template-columns: minmax(0, 1fr);
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .convo-panel {
+    border-right: 0;
+  }
+
+  .messages-app:not(.show-thread) .thread {
+    display: none;
+  }
+
+  .messages-app.show-thread .convo-panel {
+    display: none;
+  }
+
+  .thread-back {
+    display: inline-grid;
+  }
+
+  .thread-head {
+    gap: 0.6rem;
+    padding: 0.75rem;
+  }
+
+  /* Room for the title next to the back, View item and info buttons */
+  .thread-head .item-tile {
+    display: none;
+  }
+
+  /* Status badge drops to its own line under the title */
+  .thread-status {
+    order: 5;
+    flex-basis: 100%;
+  }
+
+  .safety-banner {
+    margin: 0.75rem 0.75rem 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .info-panel {
+    transition: none;
+  }
+}

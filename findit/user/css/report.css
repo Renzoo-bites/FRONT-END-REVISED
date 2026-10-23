@@ -1,0 +1,87 @@
+/* report.html */
+.report-intro {
+  max-width: 640px;
+  margin: 0 auto 2.5rem;
+  text-align: center;
+}
+
+.report-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+  max-width: 860px;
+  margin: 0 auto 3.5rem;
+}
+
+.report-option {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 2rem;
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.report-option-icon {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  margin-bottom: 1rem;
+  color: var(--green);
+  background-color: var(--green-tint);
+  border-radius: 50%;
+}
+
+.report-option h2 {
+  font-size: 1.35rem;
+  color: var(--green);
+}
+
+.report-option p {
+  flex: 1;
+  color: var(--text-muted);
+}
+
+.report-help {
+  margin: 2.5rem 0 0;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+/* report-form.html */
+.report-form-wrap {
+  max-width: 800px;
+}
+
+.report-form .toggle-group {
+  margin-bottom: 2rem;
+}
+
+.private-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  margin-bottom: 1.25rem;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  color: var(--green);
+  background-color: var(--green-tint);
+  border-radius: var(--radius-sm);
+}
+
+.private-note svg {
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+.photo-preview img {
+  max-width: 240px;
+  margin-top: 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+
+/* report-submitted.html uses .success-panel from components.css */

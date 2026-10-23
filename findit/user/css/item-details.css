@@ -1,0 +1,72 @@
+.item-details {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 2.5rem;
+  align-items: start;
+  margin-bottom: 3.5rem;
+}
+
+.item-photo {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  background-color: var(--surface-sunken);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+}
+
+.item-info h1 {
+  margin: 0.75rem 0 0.25rem;
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
+  color: var(--green);
+}
+
+.item-ref {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.item-info .detail-list {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem 1.5rem;
+  margin-bottom: 1.5rem;
+  padding: 1.25rem;
+  background-color: var(--surface-sunken);
+  border-radius: var(--radius-md);
+}
+
+.item-info h2 {
+  font-size: 1.1rem;
+}
+
+.claim-cta {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.claim-cta .form-hint {
+  margin-top: 0.75rem;
+}
+
+.item-missing {
+  grid-column: 1 / -1;
+}
+
+.item-missing h1 {
+  font-size: 1.5rem;
+  color: var(--green);
+}
+
+.similar-items h2 {
+  margin-bottom: 1.25rem;
+  font-size: 1.5rem;
+  color: var(--green);
+}
+
+@media (max-width: 768px) {
+  .item-details {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}

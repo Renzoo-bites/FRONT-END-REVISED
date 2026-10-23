@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Light or dark before the page draws: the saved choice, else the device setting -->
+  <script>(function () { var t; try { t = localStorage.getItem("findit.theme"); } catch (e) {} document.documentElement.dataset.theme = t === "dark" || t === "light" ? t : (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"); })();</script>
+  <title>FindIt Admin | Found Items</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="css/admin.css">
+  <script src="../js/auth.js"></script>
+  <script>Auth.requireRole("admin", "../user/login.html?role=admin");</script>
+</head>
+<body data-page="found-items">
+
+  <div id="admin-sidebar"></div>
+
+  <div class="admin-main">
+    <div id="admin-topbar"></div>
+
+    <main class="admin-content">
+      <header class="page-head">
+        <h1>Found Items</h1>
+        <p>Everything turned in to the SWAFO office, and where it's kept.</p>
+      </header>
+
+      <!-- Same two-column layout and detail panel as Reports -->
+      <div class="reports-layout" id="items-layout">
+        <section class="admin-card" aria-label="Found items">
+          <div class="reports-toolbar">
+            <div class="status-tabs" id="item-tabs" role="group" aria-label="Filter by status"></div>
+
+            <div class="toolbar-filters">
+              <label class="visually-hidden" for="item-category">Category</label>
+              <select class="admin-select" id="item-category">
+                <option value="">All categories</option>
+              </select>
+
+              <label class="visually-hidden" for="item-location">Location</label>
+              <select class="admin-select" id="item-location">
+                <option value="">All locations</option>
+              </select>
+
+              <!-- Shown while "Other / Not sure" is picked: narrows those items by the place typed -->
+              <span id="item-location-other-field" hidden>
+                <label class="visually-hidden" for="item-location-other">Other place</label>
+                <input type="text" class="admin-input" id="item-location-other" placeholder="Other place, e.g. parking">
+              </span>
+            </div>
+          </div>
+
+          <p class="found-summary" id="found-summary" aria-live="polite"></p>
+          <ul class="found-grid" id="found-grid"></ul>
+        </section>
+
+        <aside class="admin-card detail-panel" id="detail-panel" tabindex="-1" aria-labelledby="detail-name">
+          <div class="detail-head">
+            <div>
+              <p class="detail-label">Item ID</p>
+              <p class="detail-id" id="detail-id"></p>
+            </div>
+            <button type="button" class="icon-btn" id="detail-close" aria-label="Close details">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M18 6 6 18M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+          <div id="detail-body"></div>
+        </aside>
+      </div>
+
+      <div class="panel-backdrop" id="panel-backdrop"></div>
+    </main>
+  </div>
+
+  <script src="../js/message-store.js"></script>
+  <script src="../js/data/locations.js"></script>
+  <script src="../js/item-store.js"></script>
+  <script src="../js/claim-store.js"></script>
+  <script src="../js/settings-store.js"></script>
+  <script src="../js/photos.js"></script>
+  <script src="js/mock-data.js"></script>
+  <script src="js/admin.js"></script>
+  <script src="js/notifications.js"></script>
+  <script src="js/add-item.js"></script>
+  <script src="js/found-items.js"></script>
+</body>
+</html>

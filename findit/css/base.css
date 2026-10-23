@@ -1,0 +1,485 @@
+/* FindIt base: design tokens, fonts and element defaults for the student site and the admin.
+   The look borrows from the lost and found office itself: stone-colored walls and a manila
+   claim tag on every item. Green is kept for actions, the current page and focus.
+
+   Every color on the site comes from the variables in :root below; the [data-theme="dark"]
+   block after it overrides the same names. The inline script in each page's <head> sets
+   data-theme before the page draws, and the sun/moon button in the navbar or admin top bar
+   switches it (user/js/main.js, admin/js/admin.js). */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Merriweather:wght@700;900&display=swap");
+
+:root {
+  color-scheme: light;
+
+  /* Surfaces */
+  --bg: #f4f4f0;              /* page: a grey-green stone, not a cream */
+  --surface: #fcfcfa;         /* navbar, top band, footer, chat thread */
+  --card: #fcfcfa;            /* cards, panels, menus, dialogs */
+  --surface-sunken: #ecede7;  /* switch track, table head, neutral chips, empty photo */
+  --field: #ffffff;           /* inputs, selects, textareas */
+  --row-hover: #f7f8f4;       /* admin table rows */
+
+  /* Lines */
+  --border: #d8dad2;
+  --border-mid: #b9bcb2;      /* dashed empty states, breadcrumb slashes */
+  --border-strong: #858b80;   /* input and control edges: 3:1 on the card */
+
+  /* Text */
+  --text: #1c211d;
+  --text-muted: #575e58;
+  --placeholder: #606660;     /* 4.5:1 even on the sunken search and chat fields */
+
+  /* DLSU-D green: main actions, links, the current page, focus */
+  --green: #1a4d33;
+  --green-hover: #123925;
+  --on-green: #ffffff;        /* text and icons on a green fill */
+  --green-tint: #e3eee6;      /* selected rows, soft green chips and notes */
+  --focus: #1a4d33;
+  --focus-glow: rgba(26, 77, 51, 0.2);
+
+  /* Status (text on its own -bg passes AA) */
+  --success: #1b5a34;         /* Ready for claim, Found */
+  --success-bg: #ddeee2;
+  --warning: #7a4a00;         /* Pending, the chat safety note */
+  --warning-bg: #fbeed2;
+  --warning-border: #efd9a6;
+  --danger: #9b2c1f;          /* errors, Rejected, Delete */
+  --danger-bg: #f8e0dc;
+  --danger-hover: #7f2318;
+  --on-danger: #ffffff;
+  --danger-glow: rgba(155, 44, 31, 0.2);
+  --danger-border: rgba(155, 44, 31, 0.35);
+  --info: #22477a;            /* Matched, match scores */
+  --info-bg: #e2ebf6;
+  --info-border: #c9d8ef;
+  --neutral: #4c524d;         /* Claimed */
+  --neutral-bg: #e7e8e3;
+  --lost: #8a3413;            /* the "Lost" type badge */
+  --lost-bg: #f7e2d8;
+  --alert-dot: #e0582a;       /* unread dot on the admin bell */
+
+  /* Manila claim tag: item and reference numbers only */
+  --tag: #ece1c6;
+  --tag-ring: #cdbd95;
+  --tag-ink: #4a3c1a;
+
+  /* Switches (settings) */
+  --switch-off: #8a958d;      /* 3:1 against the card, like the thumb on it */
+  --switch-thumb: #ffffff;
+
+  /* Toasts sit on the page, so they take the opposite tone */
+  --toast-bg: #123925;
+  --toast-text: #ffffff;
+  --toast-link: #8fd19e;
+  --toast-border: rgba(255, 255, 255, 0.25);
+
+  /* Faint lines and fills on a green fill (home tiles, active tab counts) */
+  --on-green-line: rgba(255, 255, 255, 0.7);
+  --on-green-faint: rgba(255, 255, 255, 0.18);
+
+  /* Surfaces that stay dark in both themes: the admin sidebar, photos, the photo viewer */
+  --on-dark: #ffffff;
+  --on-dark-faint: rgba(255, 255, 255, 0.06);
+  --on-dark-line: rgba(255, 255, 255, 0.15);
+  --sidebar-bg: #143520;
+  --sidebar-text: #bfcdc3;
+  --sidebar-hover: rgba(255, 255, 255, 0.08);
+  --sidebar-active: rgba(255, 255, 255, 0.14);
+  --sidebar-accent: #8fd19e;
+  --photo-bg: #123925;        /* behind the campus photo while it loads */
+  --photo-overlay: rgba(18, 28, 22, 0.6);
+  --photo-overlay-light: rgba(0, 0, 0, 0.15);
+  --photo-scrim: rgba(0, 0, 0, 0.35);
+
+  /* Shadows and backdrops: only for things that float above the page */
+  --shadow-small: 0 1px 2px rgba(28, 33, 29, 0.12);
+  --shadow-raised: 0 1px 2px rgba(28, 33, 29, 0.08), 0 8px 24px rgba(28, 33, 29, 0.12);
+  --shadow-drawer: -12px 0 40px rgba(20, 53, 32, 0.18);
+  --card-shadow: 0 1px 2px rgba(20, 53, 32, 0.05), 0 6px 20px rgba(20, 53, 32, 0.06);
+  --shadow-sm: 0 0 0 transparent;
+  --backdrop: rgba(10, 25, 15, 0.4);
+  --backdrop-strong: rgba(10, 20, 14, 0.8);
+
+  /* Admin charts (read by admin/js/dashboard.js and analytics.js when the page loads),
+     checked for contrast on the card and color-blind separation. Keep the category order. */
+  --chart-reported: #1f4d2c;
+  --chart-recovered: #7dbb8b;
+  --chart-lost: #eb6834;
+  --chart-found: #2a78d6;
+  --chart-cat-1: #2e7a3c;
+  --chart-cat-2: #2a78d6;
+  --chart-cat-3: #eb6834;
+  --chart-cat-4: #6250d6;
+  --chart-cat-5: #e87ba4;
+  --chart-cat-6: #eda100;
+  --chart-grid: #e8ece6;
+  --chart-axis: #c9d1c7;
+  --chart-text: #6b7570;
+
+  /* Type: Inter for reading and headings, Merriweather for the logo, navigation and buttons */
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-heading: var(--font-body);
+  --font-brand: "Merriweather", Georgia, "Times New Roman", serif;
+  /* Loaded per page with a <link> (Messages, My Reports, admin), not by this file */
+  --font-display: "DM Serif Display", Georgia, "Times New Roman", serif;
+
+  --text-xs: 0.75rem;   /* 12: badges, captions */
+  --text-sm: 0.875rem;  /* 14: labels, table cells, secondary text */
+  --text-md: 1rem;      /* 16: body */
+  --text-lg: 1.25rem;   /* 20: card and section titles */
+  --text-xl: 1.5rem;    /* 24: h2 */
+  --text-2xl: 2rem;     /* 32: page h1 */
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+
+  /* Two radii: small for controls, medium for containers */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: var(--radius-md);
+  --radius-pill: var(--radius-sm);
+
+  --tap: 44px;
+  --nav-height: 64px;
+  --container-width: 1200px;
+  --transition: 120ms ease;
+}
+
+/* Dark: gray-green, not black. The green turns light (#97c459) with dark text on it, since
+   DLSU-D green is too dark to read on a dark page. Every text pair here passes WCAG AA. */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg: #1a1c18;
+  --surface: #20231e;
+  --card: #262a23;
+  --surface-sunken: #30352c;
+  --field: #1d201a;
+  --row-hover: #2c3128;
+
+  --border: #3b4135;
+  --border-mid: #535b4c;
+  --border-strong: #7d8676;
+
+  --text: #e8ebe3;
+  --text-muted: #aab1a3;
+  --placeholder: #9ea596;
+
+  --green: #97c459;
+  --green-hover: #a9d06f;
+  --on-green: #16230d;
+  --green-tint: #2d3a22;
+  --focus: #97c459;
+  --focus-glow: rgba(151, 196, 89, 0.3);
+
+  --success: #a3d59a;
+  --success-bg: #21351f;
+  --warning: #ebc57c;
+  --warning-bg: #3a3018;
+  --warning-border: #5a4a24;
+  --danger: #f4a496;
+  --danger-bg: #3e221e;
+  --danger-hover: #f7b9ae;
+  --on-danger: #2a0f0b;
+  --danger-glow: rgba(244, 164, 150, 0.3);
+  --danger-border: rgba(244, 164, 150, 0.4);
+  --info: #abc6ef;
+  --info-bg: #1f2b3d;
+  --info-border: #34465f;
+  --neutral: #c6ccc1;
+  --neutral-bg: #353a31;
+  --lost: #f2ad88;
+  --lost-bg: #3d261b;
+  --alert-dot: #f07a4f;
+
+  --tag: #d8cba6;
+  --tag-ring: #b5a67d;
+  --tag-ink: #3a2e12;
+
+  --switch-off: #737b6c;
+
+  --toast-bg: #e8ebe3;
+  --toast-text: #1a1c18;
+  --toast-link: #1a4d33;
+  --toast-border: rgba(0, 0, 0, 0.15);
+
+  --on-green-line: rgba(22, 35, 13, 0.45);
+  --on-green-faint: rgba(22, 35, 13, 0.15);
+
+  --sidebar-bg: #151d14;
+
+  --shadow-small: 0 1px 2px rgba(0, 0, 0, 0.5);
+  --shadow-raised: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.45);
+  --shadow-drawer: -12px 0 40px rgba(0, 0, 0, 0.5);
+  --card-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --backdrop: rgba(0, 0, 0, 0.6);
+  --backdrop-strong: rgba(0, 0, 0, 0.85);
+
+  --chart-reported: #97c459;
+  --chart-recovered: #5a9e6c;
+  --chart-lost: #f08050;
+  --chart-found: #5b9be6;
+  --chart-cat-1: #6fb27c;
+  --chart-cat-2: #5b9be6;
+  --chart-cat-3: #f08050;
+  --chart-cat-4: #9a8ef0;
+  --chart-grid: #353a31;
+  --chart-axis: #4a5243;
+  --chart-text: #aab1a3;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--text-md);
+  line-height: 1.5;
+  color: var(--text);
+  background-color: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0 0 0.5em;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--text);
+  text-wrap: balance;
+}
+
+h1 { font-size: var(--text-2xl); font-weight: 800; letter-spacing: -0.015em; }
+h2 { font-size: var(--text-xl); font-weight: 800; letter-spacing: -0.01em; }
+h3 { font-size: var(--text-lg); }
+h4 { font-size: var(--text-md); }
+
+p {
+  margin: 0 0 1em;
+}
+
+a {
+  color: var(--green);
+  text-decoration: none;
+  transition: color var(--transition);
+}
+
+a:hover {
+  color: var(--green-hover);
+}
+
+/* Links inside running text are underlined so they don't rely on color alone */
+:where(p, dd, .form-hint) > a:not([class]) {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+
+body > main {
+  flex: 1;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* Keeps every line icon on the same stroke, including the ones the admin draws in JS */
+svg[stroke="currentColor"] {
+  stroke-width: 1.75;
+}
+
+::selection {
+  background-color: var(--green-tint);
+}
+
+/* Every form on both sides, so no field falls back to the browser's grey */
+::placeholder {
+  color: var(--placeholder);
+  opacity: 1; /* Firefox fades placeholders by default */
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.text-center { text-align: center; }
+.text-primary { color: var(--green); }
+.text-accent { color: var(--green); }
+.text-muted { color: var(--text-muted); }
+.text-white { color: var(--on-dark); }
+.bg-primary { background-color: var(--green); }
+.bg-accent { background-color: var(--green); }
+.bg-surface { background-color: var(--surface-sunken); }
+
+/* ---------- Dark mode: images that can't read the variables ----------
+   The location and calendar icons and the "No photo yet" picture are SVG files shown as
+   <img>, so their colors are fixed: in dark mode a filter lightens the icons and turns the
+   placeholder dark. Real item photos and the campus photo are left as they are. */
+:root[data-theme="dark"] img[src$="location.svg"],
+:root[data-theme="dark"] img[src$="calendar.svg"] {
+  filter: invert(1) hue-rotate(180deg) brightness(1.1);
+}
+
+:root[data-theme="dark"] img[src$="item-placeholder.svg"] {
+  filter: invert(0.86) hue-rotate(180deg);
+}
+
+/* ---------- Light / dark switch (student navbar and admin top bar) ----------
+   Shows the mode it switches to: a moon in light mode, a sun in dark mode. */
+.theme-toggle .theme-icon-sun,
+:root[data-theme="dark"] .theme-toggle .theme-icon-moon {
+  display: none;
+}
+
+:root[data-theme="dark"] .theme-toggle .theme-icon-sun {
+  display: block;
+}
+
+/* While switching (the button adds .theme-changing for a moment), colors fade instead of
+   snapping, and the new icon turns in. Skipped for reduced motion. */
+@media (prefers-reduced-motion: no-preference) {
+  :root.theme-changing,
+  :root.theme-changing *,
+  :root.theme-changing *::before,
+  :root.theme-changing *::after {
+    transition: background-color 200ms ease, color 200ms ease, border-color 200ms ease,
+      fill 200ms ease, stroke 200ms ease !important;
+  }
+
+  :root.theme-changing .theme-toggle svg {
+    animation: theme-icon-in 300ms ease;
+  }
+}
+
+@keyframes theme-icon-in {
+  from {
+    opacity: 0;
+    transform: rotate(-90deg) scale(0.6);
+  }
+}
+
+/* ---------- Item cards: lift on hover and keyboard focus ----------
+   .item-card       Browse results and "Similar items" (its title link covers the card)
+   .report-card     My Reports list (a button)
+   .found-card-btn  Admin Found Items (a button; .found-card is its list item)
+   All three are already reachable by keyboard, so none needs a tabindex. Selected cards keep
+   their own border color (set in my-reports.css and admin.css). */
+.item-card,
+.report-card,
+.found-card-btn {
+  transition: transform 200ms ease, border-color 200ms ease;
+}
+
+/* Only on devices that really hover, so the lift doesn't stick after a tap on a phone */
+@media (hover: hover) {
+  .item-card:hover,
+  .report-card:hover,
+  .found-card-btn:hover {
+    transform: translateY(-4px);
+    border-color: var(--green);
+  }
+}
+
+.item-card:has(a:focus-visible),
+.report-card:focus-visible,
+.found-card-btn:focus-visible {
+  transform: translateY(-4px);
+  border-color: var(--green);
+}
+
+/* Pressed: settles most of the way back down, so a tap feels like it landed */
+.item-card:active,
+.report-card:active,
+.found-card-btn:active {
+  transform: translateY(-1px);
+}
+
+/* Reduced motion: the green border still shows, the card doesn't move */
+@media (prefers-reduced-motion: reduce) {
+  .item-card:hover,
+  .report-card:hover,
+  .found-card-btn:hover,
+  .item-card:has(a:focus-visible),
+  .report-card:focus-visible,
+  .found-card-btn:focus-visible,
+  .item-card:active,
+  .report-card:active,
+  .found-card-btn:active {
+    transform: none;
+  }
+}
+
+/* Loading placeholder. Mock data loads instantly; once requests go to the backend, add
+   .is-loading to a list or panel while it waits. */
+.is-loading {
+  position: relative;
+  min-height: 6rem;
+  pointer-events: none;
+}
+
+.is-loading > * {
+  visibility: hidden;
+}
+
+.is-loading::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-md);
+  background:
+    linear-gradient(var(--surface-sunken) 0 0) 0 0 / 100% 1rem no-repeat,
+    linear-gradient(var(--surface-sunken) 0 0) 0 1.75rem / 80% 1rem no-repeat,
+    linear-gradient(var(--surface-sunken) 0 0) 0 3.5rem / 60% 1rem no-repeat;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

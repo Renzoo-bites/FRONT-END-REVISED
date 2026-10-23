@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Light or dark before the page draws: the saved choice, else the device setting -->
+  <script>(function () { var t; try { t = localStorage.getItem("findit.theme"); } catch (e) {} document.documentElement.dataset.theme = t === "dark" || t === "light" ? t : (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"); })();</script>
+  <title>FindIt | About</title>
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/about.css">
+</head>
+<body data-page="about">
+
+  <div id="navbar"></div>
+
+  <main class="section">
+    <div class="container">
+      <header class="page-header">
+        <h1>About FindIt</h1>
+        <p>SWAFO's digital lost and found for the campus community.</p>
+      </header>
+
+      <section class="about-intro">
+        <p>
+          FindIt replaces the paper logbook at the SWAFO office. Students and employees can browse items
+          that have been turned in, report something they lost or found, and claim their belongings
+          online before picking them up in person.
+        </p>
+      </section>
+
+      <section aria-labelledby="how-heading">
+        <h2 id="how-heading" class="section-title">How it works</h2>
+        <ol class="steps">
+          <li>
+            <h3>Report or browse</h3>
+            <p>Post a lost or found item, or look through what's been turned in.</p>
+          </li>
+          <li>
+            <h3>Claim with proof</h3>
+            <p>Describe details only the owner would know so SWAFO can verify the claim.</p>
+          </li>
+          <li>
+            <h3>Pick it up</h3>
+            <p>Once approved, bring a valid ID to the SWAFO office to get your item back.</p>
+          </li>
+        </ol>
+      </section>
+
+      <section class="about-office" aria-labelledby="office-heading">
+        <h2 id="office-heading">Visit the SWAFO office</h2>
+        <dl class="detail-list">
+          <div>
+            <dt>Location</dt>
+            <dd id="office-location">GMH Building</dd>
+          </div>
+          <div>
+            <dt>Office hours</dt>
+            <dd id="office-hours">Monday&ndash;Friday, 8:00 AM &ndash; 5:00 PM</dd>
+          </div>
+          <div>
+            <dt>Email</dt>
+            <dd><a href="mailto:swafo_helpdesk@dlsud.edu.ph" id="office-email">swafo_helpdesk@dlsud.edu.ph</a></dd>
+          </div>
+        </dl>
+      </section>
+    </div>
+  </main>
+
+  <div id="footer"></div>
+
+  <script src="../js/auth.js"></script>
+  <script src="js/main.js"></script>
+  <script src="../js/settings-store.js"></script>
+  <script src="js/about.js"></script>
+</body>
+</html>

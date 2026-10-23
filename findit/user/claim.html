@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Light or dark before the page draws: the saved choice, else the device setting -->
+  <script>(function () { var t; try { t = localStorage.getItem("findit.theme"); } catch (e) {} document.documentElement.dataset.theme = t === "dark" || t === "light" ? t : (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"); })();</script>
+  <title>FindIt | Claim Item</title>
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/claim.css">
+</head>
+<body data-page="browse">
+
+  <div id="navbar"></div>
+
+  <main class="section">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <ol>
+          <li><a href="items.html">Browse</a></li>
+          <li><a href="item-details.html" id="crumb-item">Item</a></li>
+          <li aria-current="page">Claim</li>
+        </ol>
+      </nav>
+
+      <header class="page-header">
+        <h1>Claim this item</h1>
+        <p>Show us it's yours. SWAFO reviews every claim before the item can be picked up.</p>
+      </header>
+
+      <div class="claim-layout">
+        <aside class="card claim-summary" aria-labelledby="summary-heading">
+          <img class="claim-summary-img" id="summary-img" src="../assets/images/item-placeholder.svg" alt="">
+          <div class="card-body">
+            <h2 class="card-title" id="summary-heading">Item</h2>
+            <dl class="detail-list">
+              <div>
+                <dt>Reference no.</dt>
+                <dd id="summary-ref"></dd>
+              </div>
+              <div>
+                <dt>Found at</dt>
+                <dd id="summary-found"></dd>
+              </div>
+              <div>
+                <dt>Date found</dt>
+                <dd><time id="summary-date"></time></dd>
+              </div>
+            </dl>
+          </div>
+        </aside>
+
+        <div>
+          <form class="form-card" id="claim-form" method="post" enctype="multipart/form-data">
+            <fieldset class="form-section">
+              <legend>Your information</legend>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="full-name">Full name <span class="required" aria-hidden="true">*</span></label>
+                  <input type="text" id="full-name" name="fullName" autocomplete="name" required>
+                </div>
+
+                <div class="form-group">
+                  <label for="school-id">Student / Employee ID <span class="required" aria-hidden="true">*</span></label>
+                  <input type="text" id="school-id" name="schoolId" required>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="email">Email <span class="required" aria-hidden="true">*</span></label>
+                  <input type="email" id="email" name="email" autocomplete="email" required>
+                </div>
+
+                <div class="form-group">
+                  <label for="phone">Contact number <span class="required" aria-hidden="true">*</span></label>
+                  <input type="tel" id="phone" name="phone" autocomplete="tel" required>
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset class="form-section">
+              <legend>Proof of ownership</legend>
+
+              <div class="form-group">
+                <label for="brand">Brand</label>
+                <input type="text" id="brand" name="brand" placeholder="e.g. Apple, Aquaflask, JanSport" aria-describedby="brand-hint">
+                <p class="form-hint" id="brand-hint">
+                  The brand is hidden from the public listing, so only the owner should know it. Leave blank if it has no brand.
+                </p>
+              </div>
+
+              <div class="form-group">
+                <label for="identifiers">Describe the item in detail <span class="required" aria-hidden="true">*</span></label>
+                <p class="form-hint" id="identifiers-hint">
+                  Mention things only the owner would know: contents, marks, stickers, scratches, lock screen, etc.
+                </p>
+                <textarea id="identifiers" name="identifiers" aria-describedby="identifiers-hint" required></textarea>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="lost-location">Where did you lose it?</label>
+                  <input type="text" id="lost-location" name="lostLocation" placeholder="e.g. AEA library, 2nd floor">
+                </div>
+
+                <div class="form-group">
+                  <label for="lost-date">When did you lose it?</label>
+                  <input type="date" id="lost-date" name="lostDate">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="proof">Supporting files</label>
+                <input type="file" id="proof" name="proof" accept="image/*,.pdf" multiple aria-describedby="proof-hint">
+                <p class="form-hint" id="proof-hint">
+                  Optional: a photo of you with the item, a receipt, or a screenshot showing the device's serial number.
+                </p>
+              </div>
+            </fieldset>
+
+            <label class="check">
+              <input type="checkbox" name="certify" required>
+              <span>I certify that the information above is true and that this item belongs to me.</span>
+            </label>
+
+            <div class="form-actions">
+              <a href="item-details.html" class="btn btn-outline" id="claim-cancel">Cancel</a>
+              <button type="submit" class="btn btn-primary">Submit claim</button>
+            </div>
+          </form>
+
+          <section class="success-panel" id="claim-success" tabindex="-1" aria-labelledby="claim-success-heading" hidden>
+            <div class="success-icon" aria-hidden="true">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 6 9 17l-5-5" />
+              </svg>
+            </div>
+            <h2 id="claim-success-heading">Claim submitted!</h2>
+            <p>SWAFO will review your claim within 1&ndash;2 school days. We'll email you once it's approved.</p>
+            <p class="form-hint">Bring a valid school ID when you pick up the item at the SWAFO office.</p>
+            <div class="success-actions">
+              <a href="my-reports.html" class="btn btn-primary" id="track-claim">Track my claims</a>
+              <a href="items.html" class="btn btn-outline">Back to browse</a>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div id="footer"></div>
+
+  <script src="../js/auth.js"></script>
+  <script src="js/main.js"></script>
+  <script src="../js/data/locations.js"></script>
+  <script src="../js/item-store.js"></script>
+  <script src="../js/claim-store.js"></script>
+  <script src="js/claim.js"></script>
+</body>
+</html>

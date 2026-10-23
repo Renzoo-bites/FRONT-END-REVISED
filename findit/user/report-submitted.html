@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Light or dark before the page draws: the saved choice, else the device setting -->
+  <script>(function () { var t; try { t = localStorage.getItem("findit.theme"); } catch (e) {} document.documentElement.dataset.theme = t === "dark" || t === "light" ? t : (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"); })();</script>
+  <title>FindIt | Report Submitted</title>
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/report.css">
+</head>
+<body data-page="report">
+
+  <div id="navbar"></div>
+
+  <main class="section">
+    <div class="container">
+      <section class="success-panel" aria-labelledby="success-heading">
+        <div class="success-icon" aria-hidden="true">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 6 9 17l-5-5" />
+          </svg>
+        </div>
+
+        <h1 id="success-heading">Report submitted!</h1>
+        <p>Thanks for letting us know. SWAFO will review your report and contact you if there's a match.</p>
+
+        <p class="reference">Reference no. <strong>FI-2026-0157</strong></p>
+        <p class="form-hint">Keep this number for any follow-ups at the SWAFO office.</p>
+
+        <div class="success-actions">
+          <a href="my-reports.html" class="btn btn-primary">View my reports</a>
+          <a href="items.html" class="btn btn-outline">Browse found items</a>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <div id="footer"></div>
+
+  <script src="../js/auth.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

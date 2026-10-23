@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Light or dark before the page draws: the saved choice, else the device setting -->
+  <script>(function () { var t; try { t = localStorage.getItem("findit.theme"); } catch (e) {} document.documentElement.dataset.theme = t === "dark" || t === "light" ? t : (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"); })();</script>
+  <title>FindIt | Report</title>
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/report.css">
+</head>
+<body data-page="report">
+
+  <div id="navbar"></div>
+
+  <main class="section">
+    <div class="container">
+      <header class="page-header report-intro">
+        <h1>Lost it? We'll help you find it.</h1>
+        <p>Tell us what you lost or found on campus. SWAFO matches reports with the items turned in to the office.</p>
+      </header>
+
+      <div class="report-options">
+        <article class="report-option">
+          <span class="report-option-icon" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="7.5" />
+              <path d="m21 21-4.6-4.6" />
+            </svg>
+          </span>
+          <h2>I lost something</h2>
+          <p>Describe your item so we can let you know when it turns up.</p>
+          <a href="report-form.html?type=lost" class="btn btn-primary">Report a lost item</a>
+        </article>
+
+        <article class="report-option">
+          <span class="report-option-icon" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 8 12 3 3 8v8l9 5 9-5z" />
+              <path d="m3 8 9 5 9-5M12 13v8" />
+            </svg>
+          </span>
+          <h2>I found something</h2>
+          <p>Post the item you found, then turn it in to the SWAFO office.</p>
+          <a href="report-form.html?type=found" class="btn btn-accent">Report a found item</a>
+        </article>
+      </div>
+
+      <section aria-labelledby="how-heading">
+        <h2 id="how-heading" class="section-title">How it works</h2>
+        <ol class="steps">
+          <li>
+            <h3>Submit a report</h3>
+            <p>Fill out a short form with the item's details and a photo, if you have one.</p>
+          </li>
+          <li>
+            <h3>We look for a match</h3>
+            <p>SWAFO checks your report against the items turned in to the office.</p>
+          </li>
+          <li>
+            <h3>Claim your item</h3>
+            <p>Verify that it's yours and pick it up at the SWAFO office.</p>
+          </li>
+        </ol>
+      </section>
+
+      <p class="report-help">Already filed a report? <a href="my-reports.html">Check its status</a>.</p>
+    </div>
+  </main>
+
+  <div id="footer"></div>
+
+  <script src="../js/auth.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

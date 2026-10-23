@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Light or dark before the page draws: the saved choice, else the device setting -->
+  <script>(function () { var t; try { t = localStorage.getItem("findit.theme"); } catch (e) {} document.documentElement.dataset.theme = t === "dark" || t === "light" ? t : (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"); })();</script>
+  <title>FindIt | Item Details</title>
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/item-details.css">
+</head>
+<body data-page="browse">
+
+  <div id="navbar"></div>
+
+  <main class="section">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <ol>
+          <li><a href="items.html">Browse</a></li>
+          <li aria-current="page" id="crumb-current">Item details</li>
+        </ol>
+      </nav>
+
+      <!-- Filled in by js/item-details.js from the item in ?id= -->
+      <article class="item-details" id="item-details"></article>
+
+      <section class="similar-items" id="similar-items" aria-labelledby="similar-heading">
+        <h2 id="similar-heading">Similar items</h2>
+        <div class="item-grid" id="similar-grid"></div>
+      </section>
+    </div>
+  </main>
+
+  <div id="footer"></div>
+
+  <script src="../js/auth.js"></script>
+  <script src="js/main.js"></script>
+  <script src="../js/data/locations.js"></script>
+  <script src="../js/item-store.js"></script>
+  <script src="js/item-details.js"></script>
+</body>
+</html>

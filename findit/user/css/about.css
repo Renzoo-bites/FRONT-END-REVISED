@@ -1,0 +1,22 @@
+.about-intro {
+  max-width: 720px;
+  margin-bottom: 3rem;
+  font-size: 1.05rem;
+}
+
+.about-office {
+  margin-top: 3.5rem;
+  padding: 2rem;
+  background-color: var(--surface-sunken);
+  border-radius: var(--radius-lg);
+}
+
+.about-office h2 {
+  margin-bottom: 1.25rem;
+  font-size: 1.35rem;
+  color: var(--green);
+}
+
+.about-office .detail-list {
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}

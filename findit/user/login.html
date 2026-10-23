@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Light or dark before the page draws: the saved choice, else the device setting -->
+  <script>(function () { var t; try { t = localStorage.getItem("findit.theme"); } catch (e) {} document.documentElement.dataset.theme = t === "dark" || t === "light" ? t : (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"); })();</script>
+  <title>FindIt | Login</title>
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/auth.css">
+</head>
+<body data-page="login">
+
+  <div id="navbar"></div>
+
+  <main class="auth-page">
+    <div class="container auth-layout">
+      <div class="auth-card">
+        <h1 data-user="Log in" data-admin="Log in to SWAFO admin">Log in</h1>
+        <p class="auth-intro" data-user="See your reports, message SWAFO about an item, and follow your claims." data-admin="Review reports, log found items, and approve claims.">See your reports, message SWAFO about an item, and follow your claims.</p>
+
+        <p class="auth-alert auth-alert-info" id="login-notice" role="status" hidden>You've been logged out.</p>
+        <p class="auth-alert auth-alert-error" id="login-error" role="alert" hidden></p>
+
+        <form id="login-form" method="post">
+          <fieldset class="toggle-group">
+            <legend class="visually-hidden">Log in as</legend>
+            <input type="radio" id="role-user" name="role" value="user" checked>
+            <label for="role-user">Student or employee</label>
+            <input type="radio" id="role-admin" name="role" value="admin">
+            <label for="role-admin">SWAFO staff</label>
+          </fieldset>
+
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" autocomplete="email" required>
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" autocomplete="current-password" required>
+          </div>
+
+          <label class="check auth-remember">
+            <input type="checkbox" name="remember">
+            <span>Keep me logged in on this device</span>
+          </label>
+
+          <button type="submit" class="btn btn-primary btn-block">Log in</button>
+        </form>
+
+        <p class="auth-switch" data-show-for="user">No account yet? <a href="signup.html">Create one</a></p>
+        <p class="auth-switch" data-show-for="admin" hidden>Staff accounts are set up by the SWAFO office.</p>
+      </div>
+
+      <aside class="auth-aside" aria-label="Searching without an account">
+        <img class="auth-photo" src="../assets/images/background.png" alt="">
+        <div class="auth-note" data-show-for="user">
+          <h2>No account? You can still look.</h2>
+          <p>Anyone can search found items, report something, or file a claim. An account keeps your reports and claims together in one place.</p>
+          <a href="items.html">Browse found items</a>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <div id="footer"></div>
+
+  <script src="../js/auth.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/login.js"></script>
+</body>
+</html>

@@ -1,0 +1,184 @@
+/* login.html, signup.html: the form on the left, a photo of campus on the right with a
+   claim-tag note pinned to it. On phones the photo goes and the note follows the form. */
+.auth-page {
+  padding: var(--space-7) 0 var(--space-8);
+}
+
+.auth-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 420px) minmax(0, 1fr);
+  gap: var(--space-8);
+  align-items: stretch;
+}
+
+.auth-card {
+  align-self: center;
+}
+
+.auth-card h1 {
+  margin-bottom: var(--space-2);
+}
+
+.auth-intro {
+  margin-bottom: var(--space-5);
+  color: var(--text-muted);
+}
+
+.auth-card .toggle-group {
+  display: flex;
+  margin-bottom: var(--space-5);
+}
+
+.auth-card .toggle-group label {
+  flex: 1;
+  padding: 0 var(--space-3);
+}
+
+.auth-alert {
+  margin-bottom: var(--space-5);
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--text-sm);
+  color: var(--text);
+  border-left: 3px solid;
+  border-radius: var(--radius-sm);
+}
+
+.auth-alert-error {
+  border-left-color: var(--danger);
+  background-color: var(--danger-bg);
+}
+
+.auth-alert-info {
+  border-left-color: var(--success);
+  background-color: var(--success-bg);
+}
+
+.auth-remember {
+  margin: calc(var(--space-2) * -1) 0 var(--space-4);
+}
+
+.auth-switch {
+  margin: var(--space-5) 0 0;
+  padding-top: var(--space-5);
+  color: var(--text-muted);
+  border-top: 1px solid var(--border);
+}
+
+.auth-switch a {
+  font-weight: 700;
+}
+
+/* ---------- Photo + claim-tag note ---------- */
+.auth-aside {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  min-height: 580px;
+  padding: var(--space-6);
+  overflow: hidden;
+  background-color: var(--photo-bg);
+  border-radius: var(--radius-md);
+}
+
+.auth-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Frames the building's left wing and balconies; keeps the photographer's mark out of view */
+  object-position: 22% 50%;
+  filter: saturate(0.85);
+  /* The photo has a dark hairline along its top edge */
+  transform: scale(1.02);
+}
+
+.auth-note {
+  --hole-x: 26px;
+  position: relative;
+  max-width: 360px;
+  padding: var(--space-5) var(--space-5) var(--space-5) 3.25rem;
+  color: var(--tag-ink);
+  background:
+    radial-gradient(circle at var(--hole-x) 50%, transparent 7px, var(--tag-ring) 7.5px, var(--tag-ring) 10px, transparent 10.5px),
+    var(--tag);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  clip-path: polygon(16px 0, 100% 0, 100% 100%, 16px 100%, 0 calc(100% - 16px), 0 16px);
+  -webkit-mask: radial-gradient(circle at var(--hole-x) 50%, transparent 6.5px, #000 7px);
+  mask: radial-gradient(circle at var(--hole-x) 50%, transparent 6.5px, #000 7px);
+  transform: rotate(-1.5deg);
+  transform-origin: left center;
+}
+
+.auth-note h2 {
+  margin-bottom: var(--space-2);
+  font-size: var(--text-lg);
+  color: var(--tag-ink);
+}
+
+.auth-note p,
+.auth-note ul {
+  margin: 0 0 var(--space-3);
+  font-size: var(--text-sm);
+}
+
+.auth-note ul {
+  padding-left: 1.1rem;
+}
+
+.auth-note li + li {
+  margin-top: var(--space-1);
+}
+
+.auth-note > :last-child {
+  margin-bottom: 0;
+}
+
+.auth-note a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap);
+  font-weight: 700;
+  color: var(--tag-ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+
+/* The tag stays light in both themes, so its ink does too */
+.auth-note a:hover {
+  color: var(--tag-ink);
+  text-decoration-thickness: 2px;
+}
+
+.auth-note a:focus-visible {
+  outline-color: var(--tag-ink);
+}
+
+@media (max-width: 900px) {
+  .auth-page {
+    padding: var(--space-6) 0 var(--space-7);
+  }
+
+  .auth-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-6);
+    max-width: 480px;
+  }
+
+  .auth-aside {
+    min-height: 0;
+    padding: 0;
+    background: none;
+  }
+
+  .auth-photo {
+    display: none;
+  }
+
+  .auth-note {
+    max-width: none;
+    width: 100%;
+    transform: none;
+  }
+}

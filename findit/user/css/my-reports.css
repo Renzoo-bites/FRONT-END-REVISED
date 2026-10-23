@@ -1,0 +1,468 @@
+/* my-reports.html: filter chips, the report list, and the selected report's progress and match.
+   Two columns on desktop; below 900px the details move above the list, so a match shows first. */
+
+.reports-body {
+  background-color: var(--bg);
+}
+
+.reports-main {
+  padding-top: 2.5rem;
+}
+
+.reports-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.reports-header h1 {
+  margin: 0 0 0.25rem;
+  font-family: var(--font-display);
+  font-size: clamp(2.25rem, 4vw, 3rem);
+  font-weight: 400;
+}
+
+.reports-header p {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+.reports-header .btn {
+  box-shadow: var(--shadow-raised);
+}
+
+/* ---------- Filter chips ---------- */
+.report-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-bottom: 1.25rem;
+}
+
+.report-filter {
+  padding: 0.45rem 1rem;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: none;
+  border: 0;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: background-color var(--transition), color var(--transition);
+}
+
+.report-filter:hover {
+  color: var(--text);
+  background-color: var(--card);
+}
+
+.report-filter[aria-pressed="true"] {
+  color: var(--on-green);
+  background-color: var(--green);
+}
+
+.reports-notice {
+  margin: 0 0 1.25rem;
+  padding: 0.75rem 1rem;
+  font-size: 0.9rem;
+  color: var(--green);
+  background-color: var(--green-tint);
+  border-radius: var(--radius-md);
+}
+
+.reports-notice:empty {
+  display: none;
+}
+
+/* ---------- Layout ---------- */
+.reports-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 4fr) minmax(0, 6fr);
+  align-items: start;
+  gap: 1.5rem;
+}
+
+@media (max-width: 1100px) {
+  .reports-layout {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+
+.item-tile {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+}
+
+.tone-green { color: var(--success); background-color: var(--success-bg); }
+.tone-blue { color: var(--info); background-color: var(--info-bg); }
+.tone-gray { color: var(--text-muted); background-color: var(--surface-sunken); }
+
+/* ---------- Report list ---------- */
+.report-list {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.report-card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  padding: 0.9rem 1rem;
+  font: inherit;
+  text-align: left;
+  color: var(--text);
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+}
+
+/* Hover and focus lift: see "Item cards" in ../../css/base.css */
+.report-card[aria-current="true"] {
+  border-color: var(--green);
+  box-shadow: 0 0 0 1px var(--green), var(--shadow-sm);
+}
+
+.report-card-title {
+  display: block;
+  margin-bottom: 0.15rem;
+  font-weight: 700;
+}
+
+.report-card-meta {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.report-card .badge,
+.detail-head .badge {
+  white-space: nowrap;
+}
+
+.report-list-empty {
+  padding: 2rem 1rem;
+  text-align: center;
+  color: var(--text-muted);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-lg);
+}
+
+/* ---------- Selected report ---------- */
+.report-detail {
+  position: sticky;
+  top: calc(var(--nav-height) + 1.5rem);
+  padding: 1.75rem;
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  box-shadow: var(--shadow-sm);
+}
+
+.detail-head {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+}
+
+.detail-head .item-tile {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-lg);
+}
+
+.detail-head h2 {
+  margin: 0 0 0.15rem;
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 400;
+}
+
+/* Focused from script after an action; the heading itself needs no ring */
+.detail-head h2:focus {
+  outline: none;
+}
+
+.detail-meta {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+/* Progress | match. Stacked wherever the panel is too narrow for both, with the match first
+   (Progress has nothing to focus, so the keyboard order is unchanged). */
+.detail-body {
+  display: grid;
+  grid-template-columns: minmax(0, 4fr) minmax(0, 5fr);
+  gap: 1.75rem;
+}
+
+@media (min-width: 901px) and (max-width: 1100px), (max-width: 600px) {
+  .detail-body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .detail-side {
+    order: -1;
+  }
+}
+
+.detail-label {
+  margin: 0 0 0.9rem;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+/* Progress steps: a dot per step, joined by a line that turns green once both ends are done */
+.timeline {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.timeline li {
+  position: relative;
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr);
+  column-gap: 0.75rem;
+  padding-bottom: 1.1rem;
+}
+
+.timeline li:last-child {
+  padding-bottom: 0;
+}
+
+.timeline li:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 26px;
+  bottom: 4px;
+  left: 10px;
+  width: 2px;
+  background-color: var(--border);
+}
+
+.timeline li.is-done:not(:last-child)::after {
+  background-color: var(--green);
+}
+
+.step-dot {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  color: var(--on-green);
+  background-color: var(--border);
+  border-radius: 50%;
+}
+
+.is-done .step-dot {
+  background-color: var(--green);
+}
+
+.is-current .step-dot {
+  background-color: var(--green);
+  box-shadow: 0 0 0 4px var(--green-tint);
+}
+
+.is-current .step-dot::after {
+  content: "";
+  width: 8px;
+  height: 8px;
+  background-color: var(--card);
+  border-radius: 50%;
+}
+
+.step-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 700;
+  line-height: 22px;
+}
+
+.is-todo .step-label {
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.step-sub {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* The found item SWAFO matched (or the one claimed) */
+.match-card {
+  padding: 1rem;
+  background-color: var(--green-tint);
+  border-radius: 14px;
+}
+
+.match-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.match-row .item-tile {
+  width: 44px;
+  height: 44px;
+}
+
+.match-name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.match-name:hover {
+  color: var(--green);
+  text-decoration: underline;
+}
+
+.match-sub {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.match-score {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--green);
+}
+
+.match-bar {
+  display: block;
+  height: 6px;
+  margin-top: 0.9rem;
+  overflow: hidden;
+  background-color: var(--surface-sunken);
+  border-radius: var(--radius-pill);
+}
+
+.match-bar span {
+  display: block;
+  height: 100%;
+  background-color: var(--green);
+  border-radius: inherit;
+}
+
+.match-empty p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+.match-empty strong {
+  color: var(--text);
+}
+
+.match-empty p + p {
+  margin-top: 0.25rem;
+}
+
+.detail-actions {
+  display: grid;
+  gap: 0.6rem;
+  margin-top: 1rem;
+}
+
+.detail-actions .btn-cancel {
+  justify-self: center;
+  color: var(--danger);
+}
+
+.detail-box {
+  margin: 0;
+  padding: 0.85rem 1rem;
+  font-size: 0.875rem;
+  background-color: var(--surface-sunken);
+  border-radius: var(--radius-md);
+}
+
+.match-card + .detail-box {
+  margin-top: 1rem;
+}
+
+.detail-box.is-success {
+  background-color: var(--success-bg);
+}
+
+.detail-note {
+  margin: 0.85rem 0 0;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.reports-empty {
+  background-color: var(--card);
+}
+
+.reports-empty h2 {
+  font-size: 1.25rem;
+  color: var(--green);
+}
+
+@media (max-width: 900px) {
+  .reports-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .report-detail {
+    position: static;
+    order: -1;
+    scroll-margin-top: calc(var(--nav-height) + 1rem);
+  }
+}
+
+@media (max-width: 480px) {
+  .report-card {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .report-card .badge {
+    grid-column: 2;
+    justify-self: start;
+  }
+
+  .report-detail {
+    padding: 1.25rem;
+  }
+
+  .detail-head {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .detail-head .badge {
+    grid-column: 1 / -1;
+    justify-self: start;
+  }
+
+  .detail-head .item-tile {
+    width: 52px;
+    height: 52px;
+  }
+
+  .detail-head h2 {
+    font-size: 1.6rem;
+  }
+}

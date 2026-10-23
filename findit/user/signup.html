@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Light or dark before the page draws: the saved choice, else the device setting -->
+  <script>(function () { var t; try { t = localStorage.getItem("findit.theme"); } catch (e) {} document.documentElement.dataset.theme = t === "dark" || t === "light" ? t : (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"); })();</script>
+  <title>FindIt | Sign Up</title>
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/auth.css">
+</head>
+<body data-page="signup">
+
+  <div id="navbar"></div>
+
+  <main class="auth-page">
+    <div class="container auth-layout">
+      <div class="auth-card">
+        <h1>Create an account</h1>
+        <p class="auth-intro">For DLSU-D students and employees.</p>
+
+        <form method="post" data-redirect="login.html">
+          <div class="form-group">
+            <label for="full-name">Full name</label>
+            <input type="text" id="full-name" name="fullName" autocomplete="name" required>
+          </div>
+
+          <div class="form-group">
+            <label for="school-id">Student / employee ID</label>
+            <input type="text" id="school-id" name="schoolId" aria-describedby="school-id-hint" required>
+            <p class="form-hint" id="school-id-hint">The number on your DLSU-D ID card.</p>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" autocomplete="email" required>
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" autocomplete="new-password" minlength="8" aria-describedby="password-hint" required>
+            <p class="form-hint" id="password-hint">At least 8 characters.</p>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block">Create account</button>
+        </form>
+
+        <p class="auth-switch">Already have an account? <a href="login.html">Log in</a></p>
+      </div>
+
+      <aside class="auth-aside" aria-label="What an account is for">
+        <img class="auth-photo" src="../assets/images/background.png" alt="">
+        <div class="auth-note">
+          <h2>What an account adds</h2>
+          <ul>
+            <li>Your reports and claims in one place</li>
+            <li>Messages with SWAFO about an item</li>
+            <li>Matches SWAFO finds for your lost items</li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <div id="footer"></div>
+
+  <script src="../js/auth.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

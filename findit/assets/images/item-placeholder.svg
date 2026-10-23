@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300">
+  <rect width="400" height="300" fill="#ecede7"/>
+  <g fill="none" stroke="#858b80" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" transform="translate(170 92) scale(2.5)">
+    <path d="M2 2l20 20"/>
+    <path d="M9 4h6l2 3h3a2 2 0 0 1 2 2v9"/>
+    <path d="M20 20H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h3"/>
+    <path d="M14.1 14.1A3 3 0 1 1 9.9 9.9"/>
+  </g>
+  <text x="200" y="198" text-anchor="middle" font-family="Segoe UI, system-ui, sans-serif" font-size="26" fill="#575e58">No photo yet</text>
+</svg>

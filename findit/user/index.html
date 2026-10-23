@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Light or dark before the page draws: the saved choice, else the device setting -->
+  <script>(function () { var t; try { t = localStorage.getItem("findit.theme"); } catch (e) {} document.documentElement.dataset.theme = t === "dark" || t === "light" ? t : (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"); })();</script>
+  <title>FindIt | Home</title>
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/home.css">
+</head>
+<body data-page="home">
+
+  <div id="navbar"></div>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <h1>Lost something?<br>Found something?</h1>
+        <p>FindIt. We got you</p>
+
+        <form class="search-bar" role="search" action="items.html">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21-4.3-4.3" />
+          </svg>
+          <input type="search" name="q" placeholder="Search for items (e.g. wallet, phone, umbrella...)" aria-label="Search for items">
+          <button type="submit" aria-label="Search">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="8" />
+              <path d="m21 21-4.3-4.3" />
+            </svg>
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="card-grid">
+
+          <a href="items.html" class="feature-card">
+            <span class="icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="7.5" />
+                <path d="m21 21-4.6-4.6" />
+              </svg>
+            </span>
+            <h3>Find an Item</h3>
+            <p>Browse and claim found items</p>
+            <svg class="arrow" width="28" height="14" viewBox="0 0 28 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M1 7h26M21 1l6 6-6 6" />
+            </svg>
+          </a>
+
+          <a href="report.html" class="feature-card">
+            <span class="icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <defs>
+                  <mask id="report-icon-mask">
+                    <rect width="24" height="24" fill="#fff" />
+                    <path d="M14 2v6h6" fill="none" stroke="#000" stroke-width="1.5" />
+                    <polyline points="7.5 17.5 10.5 13.5 13 15.5 16.5 11" fill="none" stroke="#000" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+                  </mask>
+                </defs>
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" fill="currentColor" mask="url(#report-icon-mask)" />
+              </svg>
+            </span>
+            <h3>Report an Item</h3>
+            <p>Post a lost or found item</p>
+            <svg class="arrow" width="28" height="14" viewBox="0 0 28 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M1 7h26M21 1l6 6-6 6" />
+            </svg>
+          </a>
+
+          <a href="claim.html" class="feature-card">
+            <span class="icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <defs>
+                  <mask id="claim-icon-mask">
+                    <rect width="24" height="24" fill="#fff" />
+                    <path d="M12 3v3.5" stroke="#000" stroke-width="1.5" />
+                  </mask>
+                </defs>
+                <rect x="7" y="3" width="10" height="8.5" rx="1" fill="currentColor" mask="url(#claim-icon-mask)" />
+                <g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M2 12.5 6.5 19H11v-3.5l-3.5-2.5" />
+                  <path d="M22 12.5 17.5 19H13v-3.5l3.5-2.5" />
+                </g>
+              </svg>
+            </span>
+            <h3>Claim an Item</h3>
+            <p>Verify and retrieve your belongings</p>
+            <svg class="arrow" width="28" height="14" viewBox="0 0 28 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M1 7h26M21 1l6 6-6 6" />
+            </svg>
+          </a>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer"></div>
+
+  <script src="../js/auth.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

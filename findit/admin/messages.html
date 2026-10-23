@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Light or dark before the page draws: the saved choice, else the device setting -->
+  <script>(function () { var t; try { t = localStorage.getItem("findit.theme"); } catch (e) {} document.documentElement.dataset.theme = t === "dark" || t === "light" ? t : (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"); })();</script>
+  <title>FindIt Admin | Messages</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/chat.css">
+  <link rel="stylesheet" href="css/admin.css">
+  <script src="../js/auth.js"></script>
+  <script>Auth.requireRole("admin", "../user/login.html?role=admin");</script>
+</head>
+<body data-page="messages" class="admin-chat-page">
+
+  <div id="admin-sidebar"></div>
+
+  <div class="admin-main">
+    <div id="admin-topbar"></div>
+
+    <main class="admin-content">
+      <header class="page-head">
+        <h1>Messages</h1>
+        <p>Chat with students about their lost and found reports.</p>
+      </header>
+
+      <div class="admin-card chat-card" id="chat-card">
+        <section class="chat-list-panel" aria-label="Conversations">
+          <div class="chat-list-head status-tabs" id="chat-filters" role="group" aria-label="Filter conversations">
+            <button type="button" class="status-tab" data-filter="all" aria-pressed="true">All</button>
+            <button type="button" class="status-tab" data-filter="unread" aria-pressed="false">
+              Unread <span class="tab-count" id="chat-unread-total">0</span>
+            </button>
+          </div>
+          <ul class="chat-list" id="chat-list"></ul>
+        </section>
+
+        <section class="chat-thread" aria-label="Conversation">
+          <header class="chat-thread-head" id="chat-thread-head"></header>
+
+          <div class="thread-messages" id="thread-messages" role="log" aria-live="polite" aria-label="Messages"></div>
+
+          <form class="composer" id="composer">
+            <p class="composer-error" id="composer-error" role="alert" hidden></p>
+            <div class="attach-preview" id="attach-preview" hidden></div>
+
+            <div class="composer-row">
+              <button type="button" class="composer-btn" id="attach-btn" aria-label="Attach a photo">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48" />
+                </svg>
+              </button>
+              <input type="file" id="attach-input" accept="image/*" hidden>
+
+              <label class="visually-hidden" for="composer-input">Reply</label>
+              <textarea id="composer-input" rows="1" placeholder="Reply to the student..."></textarea>
+
+              <button type="submit" class="send-btn" id="send-btn" aria-label="Send reply" disabled>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M5 12h14M13 6l6 6-6 6" />
+                </svg>
+              </button>
+            </div>
+          </form>
+        </section>
+
+        <aside class="chat-info" id="chat-info" aria-label="Conversation details"></aside>
+        <div class="chat-info-backdrop" id="chat-info-backdrop"></div>
+      </div>
+    </main>
+  </div>
+
+  <dialog class="lightbox" id="lightbox" aria-label="Photo">
+    <button type="button" class="lightbox-close" id="lightbox-close" aria-label="Close photo">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M18 6 6 18M6 6l12 12" />
+      </svg>
+    </button>
+    <img id="lightbox-img" alt="Shared photo">
+  </dialog>
+
+  <script src="../js/message-store.js"></script>
+  <script src="../js/data/locations.js"></script>
+  <script src="../js/item-store.js"></script>
+  <script src="../js/claim-store.js"></script>
+  <script src="../js/settings-store.js"></script>
+  <script src="../js/photos.js"></script>
+  <script src="js/mock-data.js"></script>
+  <script src="js/admin.js"></script>
+  <script src="js/notifications.js"></script>
+  <script src="js/add-item.js"></script>
+  <script src="../js/chat-ui.js"></script>
+  <script src="js/messages.js"></script>
+</body>
+</html>
