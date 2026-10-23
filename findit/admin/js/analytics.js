@@ -1,6 +1,7 @@
 // Analytics: charts computed from every report (AdminAPI.getReports(), which includes items
 // logged with "+ Add found item"). The Period filter scopes every number on the page.
 // Chart colors are --chart-* in css/base.css (light and dark), checked for contrast and color-blind separation.
+// Switching the theme redraws the charts in its colors.
 
 const chartVar = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
 const total = (values) => values.reduce((sum, n) => sum + n, 0);
@@ -17,16 +18,21 @@ const analytics = {
   categories: [],
   period: "", // "YYYY-MM", or "" for all time
   charts: {},
+  recoloring: false, // redrawing for a new theme: swap the colors in without animating
 };
 
-if (window.Chart) {
+// Axis text and fonts for every chart, in the current theme
+function setChartDefaults() {
   Chart.defaults.font.family = getComputedStyle(document.body).fontFamily;
   Chart.defaults.font.size = 12;
   Chart.defaults.color = chartVar("--chart-text");
 }
 
+if (window.Chart) setChartDefaults();
+
 // Tooltips list the value first, then the series, keyed with a short line in its color.
-const ANALYTICS_TOOLTIP = {
+// Built for each draw, so they take the current theme's colors.
+const analyticsTooltip = () => ({
   backgroundColor: chartVar("--card"),
   titleColor: chartVar("--text"),
   bodyColor: chartVar("--text-muted"),
@@ -45,7 +51,7 @@ const ANALYTICS_TOOLTIP = {
       borderWidth: 3,
     }),
   },
-};
+});
 
 // Writes each bar's value just past its tip (horizontal bar charts).
 const barValueLabels = {
@@ -80,7 +86,8 @@ function showChartFallback(canvas) {
   canvas.replaceWith(message);
 }
 
-// Creates the chart the first time, then just swaps its data.
+// Creates the chart the first time, then swaps in its new data and colors: animated for new
+// numbers, at once for a new theme.
 function drawChart(key, canvasId, config) {
   const canvas = document.getElementById(canvasId);
   if (!window.Chart) {
@@ -90,7 +97,8 @@ function drawChart(key, canvasId, config) {
   const existing = analytics.charts[key];
   if (existing) {
     existing.data = config.data;
-    existing.update();
+    existing.options = config.options;
+    existing.update(analytics.recoloring ? "none" : undefined);
   } else {
     analytics.charts[key] = new Chart(canvas, config);
   }
@@ -116,7 +124,7 @@ function horizontalBarConfig(labels, values) {
       indexAxis: "y",
       maintainAspectRatio: false,
       layout: { padding: { right: 32 } },
-      plugins: { legend: { display: false }, tooltip: ANALYTICS_TOOLTIP },
+      plugins: { legend: { display: false }, tooltip: analyticsTooltip() },
       scales: {
         x: { beginAtZero: true, border: { display: false }, grid: { color: chartVar("--chart-grid") }, ticks: { precision: 0, maxTicksLimit: 5 } },
         y: { grid: { display: false }, border: { color: chartVar("--chart-axis") } },
@@ -163,13 +171,14 @@ function renderTrend(reports) {
     : [...new Set(reports.map(keyOf))].sort();
   const labels = byWeek ? keys : keys.map((month) => AdminUI.formatDate(`${month}-01`, { month: "short", year: "numeric" }));
   const series = [
-    { label: "Lost", color: chartVar("--chart-lost"), data: keys.map((k) => reports.filter((r) => keyOf(r) === k && r.type === "lost").length) },
-    { label: "Found", color: chartVar("--chart-found"), data: keys.map((k) => reports.filter((r) => keyOf(r) === k && r.type === "found").length) },
+    { label: "Lost", colorVar: "--chart-lost", data: keys.map((k) => reports.filter((r) => keyOf(r) === k && r.type === "lost").length) },
+    { label: "Found", colorVar: "--chart-found", data: keys.map((k) => reports.filter((r) => keyOf(r) === k && r.type === "found").length) },
   ];
 
   document.getElementById("trend-heading").textContent = byWeek ? "Reports by week" : "Reports by month";
+  // The legend uses the CSS variable itself, so it changes with the theme like the rest of the page.
   document.getElementById("trend-legend").innerHTML = series
-    .map((s) => `<li><span class="swatch" style="background:${s.color}"></span>${s.label}</li>`).join("");
+    .map((s) => `<li><span class="swatch" style="background: var(${s.colorVar})"></span>${s.label}</li>`).join("");
   document.getElementById("trend-table").innerHTML = tableHTML(
     [byWeek ? "Week" : "Month", ...series.map((s) => s.label)],
     labels.map((label, i) => [label, ...series.map((s) => s.data[i])]),
@@ -182,13 +191,13 @@ function renderTrend(reports) {
     data: {
       labels,
       datasets: series.map((s) => ({
-        label: s.label, data: s.data, backgroundColor: s.color, borderRadius: 4, maxBarThickness: 22, categoryPercentage: 0.6, barPercentage: 0.85,
+        label: s.label, data: s.data, backgroundColor: chartVar(s.colorVar), borderRadius: 4, maxBarThickness: 22, categoryPercentage: 0.6, barPercentage: 0.85,
       })),
     },
     options: {
       maintainAspectRatio: false,
       interaction: { mode: "index", intersect: false },
-      plugins: { legend: { display: false }, tooltip: ANALYTICS_TOOLTIP },
+      plugins: { legend: { display: false }, tooltip: analyticsTooltip() },
       scales: {
         x: { grid: { display: false }, border: { color: chartVar("--chart-axis") } },
         y: { beginAtZero: true, border: { display: false }, grid: { color: chartVar("--chart-grid") }, ticks: { precision: 0, maxTicksLimit: 5 } },
@@ -255,6 +264,16 @@ function loadAnalytics() {
 // New items (here, or in another tab) change the numbers.
 document.addEventListener("findit:item-added", loadAnalytics);
 ItemStore.subscribe(loadAnalytics);
+
+// Light / dark switch (admin.js): draw the charts again in the new colors, once there are any.
+// Without Chart.js there's only the fallback text, and the legend follows the theme on its own.
+document.addEventListener("findit:theme-change", () => {
+  if (!window.Chart || !Object.keys(analytics.charts).length) return;
+  setChartDefaults();
+  analytics.recoloring = true;
+  renderAll();
+  analytics.recoloring = false;
+});
 
 // Wait for the web font, or Chart.js measures the axis labels too narrow and clips them.
 (document.fonts ? document.fonts.ready : Promise.resolve()).then(loadAnalytics);

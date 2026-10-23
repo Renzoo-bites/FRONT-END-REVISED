@@ -110,8 +110,8 @@ const AdminUI = {
 
 // Light / dark switch. The inline script in each page's <head> has already set data-theme
 // (the saved choice, or the device setting on a first visit); this button flips it and saves
-// the choice. user/js/main.js has the same switch for the student navbar. Charts take the
-// new colors the next time the page loads.
+// the choice. user/js/main.js has the same switch for the student navbar. Pages with charts
+// redraw them in the new colors on the "findit:theme-change" event.
 const THEME_KEY = "findit.theme";
 
 const THEME_ICONS = `
@@ -132,6 +132,8 @@ function applyTheme(theme) {
   root.dataset.theme = theme;
   document.getElementById("theme-toggle").setAttribute("aria-label", themeLabel());
   setTimeout(() => root.classList.remove("theme-changing"), 300);
+  // A chart keeps the colors it was drawn with, so pages with charts redraw them.
+  document.dispatchEvent(new CustomEvent("findit:theme-change", { detail: { theme } }));
 }
 
 function setupThemeToggle() {

@@ -1,5 +1,6 @@
 // Dashboard: greeting, stat cards, weekly bar chart, category donut, and today's lost items.
 // Chart colors live in css/base.css (--chart-*, light and dark) so the theme stays in one place.
+// Switching the theme redraws the charts in its colors.
 
 const cssVar = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
 const esc = (value) => AdminUI.escape(value);
@@ -8,7 +9,8 @@ const sum = (values) => values.reduce((total, n) => total + n, 0);
 const TREND_ICONS = { up: "arrowUp", down: "arrowDown" };
 
 // Tooltips list the value first, then the series, keyed with a short line in the series color.
-const TOOLTIP = {
+// Built for each draw, so they take the current theme's colors.
+const tooltip = () => ({
   backgroundColor: cssVar("--card"),
   titleColor: cssVar("--text"),
   bodyColor: cssVar("--text-muted"),
@@ -27,12 +29,28 @@ const TOOLTIP = {
       borderWidth: 3,
     }),
   },
-};
+});
 
-if (window.Chart) {
+// Axis text and fonts for every chart, in the current theme
+function setChartDefaults() {
   Chart.defaults.font.family = getComputedStyle(document.body).fontFamily;
   Chart.defaults.font.size = 12;
   Chart.defaults.color = cssVar("--chart-text");
+}
+
+if (window.Chart) setChartDefaults();
+
+// Draws the chart the first time. After that (a new theme) it swaps in the new colors in place,
+// without replaying the animation.
+function drawChart(canvas, config) {
+  const chart = Chart.getChart(canvas);
+  if (!chart) {
+    new Chart(canvas, config);
+    return;
+  }
+  chart.data = config.data;
+  chart.options = config.options;
+  chart.update("none");
 }
 
 function timeOfDayGreeting(date = new Date()) {
@@ -69,12 +87,13 @@ function renderStats(stats) {
 
 function renderWeeklyChart({ labels, reported, recovered }) {
   const series = [
-    { label: "Reported", data: reported, color: cssVar("--chart-reported") },
-    { label: "Recovered", data: recovered, color: cssVar("--chart-recovered") },
+    { label: "Reported", data: reported, colorVar: "--chart-reported" },
+    { label: "Recovered", data: recovered, colorVar: "--chart-recovered" },
   ];
 
+  // The legend uses the CSS variable itself, so it changes with the theme like the rest of the page.
   document.getElementById("weekly-legend").innerHTML = series
-    .map((s) => `<li><span class="swatch" style="background:${s.color}"></span>${s.label}</li>`)
+    .map((s) => `<li><span class="swatch" style="background: var(${s.colorVar})"></span>${s.label}</li>`)
     .join("");
 
   document.getElementById("weekly-table").innerHTML = `
@@ -92,14 +111,14 @@ function renderWeeklyChart({ labels, reported, recovered }) {
   canvas.setAttribute("aria-label", `Bar chart of reports this week: ${sum(reported)} reported, ${sum(recovered)} recovered.`);
   if (!window.Chart) return showChartFallback(canvas);
 
-  new Chart(canvas, {
+  drawChart(canvas, {
     type: "bar",
     data: {
       labels,
       datasets: series.map((s) => ({
         label: s.label,
         data: s.data,
-        backgroundColor: s.color,
+        backgroundColor: cssVar(s.colorVar),
         borderRadius: 4,
         maxBarThickness: 16,
         categoryPercentage: 0.6,
@@ -109,7 +128,7 @@ function renderWeeklyChart({ labels, reported, recovered }) {
     options: {
       maintainAspectRatio: false,
       interaction: { mode: "index", intersect: false },
-      plugins: { legend: { display: false }, tooltip: TOOLTIP },
+      plugins: { legend: { display: false }, tooltip: tooltip() },
       scales: {
         x: { grid: { display: false }, border: { color: cssVar("--chart-axis") } },
         y: {
@@ -125,14 +144,14 @@ function renderWeeklyChart({ labels, reported, recovered }) {
 
 function renderCategoryChart(items, categories) {
   // Color follows the category (its slot in the categories list), never its position in this chart.
-  const colorFor = (category) => cssVar(`--chart-cat-${categories.indexOf(category) + 1}`);
+  const colorVar = (category) => `--chart-cat-${categories.indexOf(category) + 1}`;
   const total = sum(items.map((item) => item.count));
   const totalEl = document.getElementById("category-total");
 
   totalEl.innerHTML = `<strong>${total}</strong><span>total</span>`;
   document.getElementById("category-legend").innerHTML = items.map((item) => `
     <li>
-      <span class="swatch" style="background:${colorFor(item.category)}"></span>
+      <span class="swatch" style="background: var(${colorVar(item.category)})"></span>
       ${esc(item.category)}
       <span class="count">${esc(item.count)}</span>
     </li>`).join("");
@@ -145,14 +164,14 @@ function renderCategoryChart(items, categories) {
     return showChartFallback(canvas);
   }
 
-  new Chart(canvas, {
+  drawChart(canvas, {
     type: "doughnut",
     data: {
       labels: items.map((item) => item.category),
       datasets: [{
         data: items.map((item) => item.count),
-        backgroundColor: items.map((item) => colorFor(item.category)),
-        borderColor: cssVar("--card"),
+        backgroundColor: items.map((item) => cssVar(colorVar(item.category))),
+        borderColor: cssVar("--card"), // the gaps between slices, in the card's color
         borderWidth: 2,
         hoverOffset: 4,
       }],
@@ -160,7 +179,7 @@ function renderCategoryChart(items, categories) {
     options: {
       maintainAspectRatio: false,
       cutout: "72%",
-      plugins: { legend: { display: false }, tooltip: TOOLTIP },
+      plugins: { legend: { display: false }, tooltip: tooltip() },
     },
   });
 }
@@ -182,8 +201,19 @@ AdminAPI.getCurrentUser().then((user) => {
 });
 
 Promise.all([AdminAPI.getDashboard(), AdminAPI.getCategories()]).then(([dashboard, categories]) => {
+  const renderCharts = () => {
+    renderWeeklyChart(dashboard.weeklyReports);
+    renderCategoryChart(dashboard.itemsByCategory, categories);
+  };
   renderStats(dashboard.stats);
-  renderWeeklyChart(dashboard.weeklyReports);
-  renderCategoryChart(dashboard.itemsByCategory, categories);
+  renderCharts();
   renderLostToday(dashboard.lostToday);
+
+  // Light / dark switch (admin.js): draw the charts again in the new colors. Without Chart.js
+  // there's only the fallback text, and the legends follow the theme on their own.
+  document.addEventListener("findit:theme-change", () => {
+    if (!window.Chart) return;
+    setChartDefaults();
+    renderCharts();
+  });
 });
